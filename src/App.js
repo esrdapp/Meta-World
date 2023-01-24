@@ -263,7 +263,10 @@ class App extends React.Component {
           You have [ {this.state.getMyLand} ] Land Tokens
         </p>
         <br />
-        <p>Rent profits earned so far - [ {this.state.landTokensOwned} ] HPB</p>
+        <p>
+          Rent profits earned so far - [ {this.state.landTokensOwned.toFixed(2)}{" "}
+          ] HPB
+        </p>
         <p className="small">
           Check page regularly to see your profits rising! (may need to refresh
           page)
@@ -366,7 +369,9 @@ class App extends React.Component {
         <br />
 
         <p>You have [ {this.state.getMyLand} ] Land Tokens</p>
-        <p>Rent earned so far - [ {this.state.landTokensOwned} ] HPB</p>
+        <p>
+          Rent earned so far - [ {this.state.landTokensOwned.toFixed(2)} ] HPB
+        </p>
       </div>
     );
   }
