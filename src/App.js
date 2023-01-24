@@ -260,10 +260,10 @@ class App extends React.Component {
           Total HPB in Meta World contract: {this.state.getBalance} HPB
         </p>
         <p className="paddedtext">
-          You have [ {this.state.getMyChips} ] Land Tokens
+          You have [ {this.state.landTokensOwned} ] Land Tokens
         </p>
         <br />
-        <p>Rent profits earned so far - [ {this.state.chipRewards} ] HPB</p>
+        <p>Rent profits earned so far - [ {this.state.getMyLand} ] HPB</p>
         <p className="small">
           Check page regularly to see your profits rising! (may need to refresh
           page)
@@ -365,8 +365,8 @@ class App extends React.Component {
         </Grid>
         <br />
 
-        <p>You have [ {this.state.getMyChips} ] Land Tokens</p>
-        <p>Rent earned so far - [ {this.state.chipRewards} ] HPB</p>
+        <p>You have [ {this.state.landTokensOwned} ] Land Tokens</p>
+        <p>Rent earned so far - [ {this.state.getMyLand} ] HPB</p>
       </div>
     );
   }
