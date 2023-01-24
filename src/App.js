@@ -58,7 +58,7 @@ class App extends React.Component {
       .getBalance()
       .call()
       .then((wei) => {
-        this.setState({ getBalance: wei / 10 ** 18 });
+        this.setState({ getBalance: wei / 10 ** 18 }).toFixed(2);
       });
 
     myContract.methods
@@ -86,7 +86,7 @@ class App extends React.Component {
       .landTokensOwned(this.state.account)
       .call()
       .then((wei) => {
-        this.setState({ landTokensOwned: wei / 10 ** 18 });
+        this.setState({ landTokensOwned: wei / 10 ** 18 }).toFixed(2);
       });
 
     myContract.methods
