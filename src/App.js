@@ -6,7 +6,7 @@ import myContract from "./myContract";
 import React from "react";
 import "semantic-ui-css/semantic.min.css";
 import CardExample from "./CardExample";
-import { Grid } from "semantic-ui-react";
+import { Card, Grid } from "semantic-ui-react";
 import Metaworld from "../src/assets/metaworld.png";
 import Metaworld2 from "../src/assets/metaworld2.png";
 import Metaworld3 from "../src/assets/metaworld3.png";
@@ -54,11 +54,46 @@ class App extends React.Component {
     });
 */
 
+    class NameForm extends React.Component {
+      constructor(props) {
+        super(props);
+        this.state = { value: "" };
+
+        this.handleChange = this.handleChange.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
+      }
+
+      handleChange(event) {
+        this.setState({ value: event.target.value });
+      }
+
+      handleSubmit(event) {
+        alert("A name was submitted: " + this.state.value);
+        event.preventDefault();
+      }
+
+      render() {
+        return (
+          <form onSubmit={this.handleSubmit}>
+            <label>
+              Name:
+              <input
+                type="text"
+                value={this.state.value}
+                onChange={this.handleChange}
+              />
+            </label>
+            <input type="submit" value="Submit" />
+          </form>
+        );
+      }
+    }
+
     myContract.methods
       .getBalance()
       .call()
       .then((wei) => {
-        this.setState({ getBalance: wei / 10 ** 18 }).toFixed(2);
+        this.setState({ getBalance: wei / 10 ** 18 });
       });
 
     myContract.methods
@@ -86,7 +121,7 @@ class App extends React.Component {
       .landTokensOwned(this.state.account)
       .call()
       .then((wei) => {
-        this.setState({ landTokensOwned: wei / 10 ** 18 }).toFixed(2);
+        this.setState({ landTokensOwned: (wei / 10 ** 18).toFixed(2) });
       });
 
     myContract.methods
@@ -236,20 +271,22 @@ class App extends React.Component {
 
     return (
       <div className="App">
-        <div className="Meta-world-header">
-          <img src={logo} className="App-logo" alt="logo" />
+        <div className="centerdiv">
+          <div className="Meta-world-header">
+            <img src={logo} className="App-logo" alt="logo" />
 
-          <p className="medium">
-            Meta World - Official Contract Address (Verified)
-            <br />
-            <a
-              rel="noreferrer"
-              target="_blank"
-              href="https://hscan.org/address/0x17a23ba8848dff11552c1343d76b151beaabfa12"
-            >
-              0x17a23ba8848dff11552c1343d76b151beaabfa12
-            </a>
-          </p>
+            <p className="medium">
+              Meta World - Official Contract Address (Verified)
+              <br />
+              <a
+                rel="noreferrer"
+                target="_blank"
+                href="https://hscan.org/address/0x17a23ba8848dff11552c1343d76b151beaabfa12"
+              >
+                0x17a23ba8848dff11552c1343d76b151beaabfa12
+              </a>
+            </p>
+          </div>
         </div>
         <p>Up to 8% Daily Return! | Up to 2,920% APR! | Only 1% Dev Fee</p>
         <p className="small">
@@ -263,115 +300,129 @@ class App extends React.Component {
           You have [ {this.state.getMyLand} ] Land Tokens
         </p>
         <br />
-        <p>
-          Rent profits earned so far - [ {this.state.landTokensOwned.toFixed(2)}{" "}
-          ] HPB
-        </p>
+        <p>Rent profits earned so far - [ {this.state.landTokensOwned} ] HPB</p>
         <p className="small">
           Check page regularly to see your profits rising! (may need to refresh
           page)
         </p>
 
-        <div className="App">
+        <div className="centerdiv">
+          <div className="App">
+            <Grid columns={3} divided>
+              <Grid.Row floated="centered">
+                <Grid.Column floated="centered">
+                  <Card floated="centered">
+                    <CardExample
+                      floated="centered"
+                      name="Buy Land"
+                      description="Purchase Land tokens"
+                      image={Metaworld}
+                    />
+                  </Card>
+                </Grid.Column>
+
+                <Grid.Column floated="centered">
+                  <div>
+                    <CardExample
+                      floated="centered"
+                      name="Re-Invest"
+                      description="Re-Invest your HPB earnings"
+                      image={Metaworld2}
+                    />
+                  </div>
+                </Grid.Column>
+                <Grid.Column floated="centered">
+                  <CardExample
+                    floated="centered"
+                    floated="centered"
+                    name="Cash Out"
+                    description="Cash out the HPB you've earned"
+                    image={Metaworld3}
+                  />
+                </Grid.Column>
+              </Grid.Row>
+            </Grid>
+          </div>
+        </div>
+
+        <div className="centerdiv">
           <Grid columns={3} divided>
             <Grid.Row>
               <Grid.Column>
-                <CardExample
-                  name="Buy Land"
-                  description="Purchase Land tokens"
-                  image={Metaworld}
-                />
+                <div className="App">
+                  <form onSubmit={this.handleBuy} className="mt-20">
+                    <div>
+                      <label className="small">Amount to spend in HPB: </label>
+                      <input
+                        type="number"
+                        min={0}
+                        value={this.state.amount}
+                        onChange={(event) =>
+                          this.setState({ amount: event.target.value })
+                        }
+                      />
+                      <br />
+                      <label className="small">
+                        Provide a Referral Wallet Address:{" "}
+                      </label>
+                      <input
+                        type="address"
+                        min={0}
+                        value={this.state.ref}
+                        onChange={(event) =>
+                          this.setState({ ref: event.target.value })
+                        }
+                      />
+                      <button className="small">BUY Land Tokens</button>
+                    </div>
+                  </form>
+                </div>
               </Grid.Column>
+
               <Grid.Column>
-                <CardExample
-                  name="Re-Invest"
-                  description="Re-Invest your HPB earnings"
-                  image={Metaworld2}
-                />
+                <div className="App">
+                  <form onSubmit={this.handleFry} className="mt-20">
+                    <br />
+                    <div>
+                      <p></p>
+                      <label className="small">
+                        Provide a Referral Wallet Address:{" "}
+                      </label>
+                      <input
+                        type="address"
+                        min={0}
+                        value={this.state.ref}
+                        onChange={(event) =>
+                          this.setState({ ref: event.target.value })
+                        }
+                      />
+                      <button className="small">Re-invest your earnings</button>
+                    </div>
+                  </form>
+                </div>
               </Grid.Column>
+
               <Grid.Column>
-                <CardExample
-                  name="Cash Out"
-                  description="Cash out the HPB you've earned"
-                  image={Metaworld3}
-                />
+                <p></p>
+                <p></p>
+                <br />
+                <div className="App">
+                  <label className="small">
+                    Cash out your earnings - WARNING - your APR% will reduce
+                    each time you do this!
+                  </label>
+                  <button onClick={this.handleSell} className="small">
+                    Cash out your earnings in HPB
+                  </button>
+                </div>
               </Grid.Column>
             </Grid.Row>
           </Grid>
+          <br />
         </div>
 
-        <Grid columns={3} divided>
-          <Grid.Row>
-            <Grid.Column>
-              <form onSubmit={this.handleBuy} className="mt-20">
-                <div>
-                  <label className="small">Amount to spend in HPB: </label>
-                  <input
-                    type="number"
-                    min={0}
-                    value={this.state.amount}
-                    onChange={(event) =>
-                      this.setState({ amount: event.target.value })
-                    }
-                  />
-                  <br />
-                  <label className="small">
-                    Provide a Referral Wallet Address:{" "}
-                  </label>
-                  <input
-                    type="address"
-                    min={0}
-                    value={this.state.ref}
-                    onChange={(event) =>
-                      this.setState({ ref: event.target.value })
-                    }
-                  />
-                  <button className="small">BUY Land Tokens</button>
-                </div>
-              </form>
-            </Grid.Column>
-
-            <Grid.Column>
-              <form onSubmit={this.handleFry} className="mt-20">
-                <br />
-                <div>
-                  <p></p>
-                  <label className="small">
-                    Provide a Referral Wallet Address:{" "}
-                  </label>
-                  <input
-                    type="address"
-                    min={0}
-                    value={this.state.ref}
-                    onChange={(event) =>
-                      this.setState({ ref: event.target.value })
-                    }
-                  />
-                  <button className="small">Re-invest your earnings</button>
-                </div>
-              </form>
-            </Grid.Column>
-
-            <Grid.Column>
-              <p></p>
-              <p></p>
-              <br />
-              <label className="small">
-                Cash out your earnings - WARNING - your APR% will reduce each
-                time you do this!
-              </label>
-              <button onClick={this.handleSell} className="small">
-                Cash out your earnings in HPB
-              </button>
-            </Grid.Column>
-          </Grid.Row>
-        </Grid>
-        <br />
-
         <p>You have [ {this.state.getMyLand} ] Land Tokens</p>
-        <p>
-          Rent earned so far - [ {this.state.landTokensOwned.toFixed(2)} ] HPB
-        </p>
+        <p>Rent earned so far - [ {this.state.landTokensOwned} ] HPB</p>
       </div>
     );
   }
