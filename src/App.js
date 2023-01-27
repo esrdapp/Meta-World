@@ -17,10 +17,13 @@ class App extends React.Component {
   state = {
     owner: "",
     name: "",
-    getMyChips: "",
-    calculateChipSell: "",
+    getMyLand: "",
+    getMyBuyers: "",
+    landTokensOwned: "",
+    totalLandOwned: "",
+    calculateLandSell: "",
     getBalance: "",
-    chipRewards: "",
+    landRewards: "",
     stakeValue: 0,
     stakeIndex: 0,
     withdrawValue: 0,
@@ -93,7 +96,7 @@ class App extends React.Component {
       .getBalance()
       .call()
       .then((wei) => {
-        this.setState({ getBalance: wei / 10 ** 18 });
+        this.setState({ getBalance: (wei / 10 ** 18).toFixed(2) });
       });
 
     myContract.methods
@@ -101,6 +104,20 @@ class App extends React.Component {
       .call()
       .then((wei) => {
         this.setState({ getMyLand: wei });
+      });
+
+    myContract.methods
+      .totalLandOwned(this.state.account)
+      .call()
+      .then((wei) => {
+        this.setState({ totalLandOwned: wei });
+      });
+
+    myContract.methods
+      .getMyBuyers(this.state.account)
+      .call()
+      .then((wei) => {
+        this.setState({ getMyBuyers: wei });
       });
 
     myContract.methods
@@ -281,23 +298,34 @@ class App extends React.Component {
               <a
                 rel="noreferrer"
                 target="_blank"
-                href="https://hscan.org/address/0x17a23ba8848dff11552c1343d76b151beaabfa12"
+                href="https://hscan.org/address/0x4116e68D3A35334Cd174EDaDc1A87fe8F30737f7"
               >
-                0x17a23ba8848dff11552c1343d76b151beaabfa12
+                0x4116e68D3A35334Cd174EDaDc1A87fe8F30737f7
               </a>
             </p>
           </div>
         </div>
-        <p>Up to 8% Daily Return! | Up to 2,920% APR! | Only 1% Dev Fee</p>
         <p className="small">
-          Earn 5% of the HPB used to Buy land tokens or re-invest rents from
-          anyone who uses your wallet address as a referral link!
+          Any Land tokens purchased for MetaWorld are permanent. You will always
+          own them!
+        </p>
+        <p className="small">
+          The price of Land tokens slowly increases. The sooner you buy, the
+          more you will receive!
+        </p>
+        <p className="small">
+          You will continue to earn rents whilst there is still HPB in the Meta
+          World contract.
+        </p>
+        <p className="small">
+          Earn 5% of the rents made on other peoples Land Tokens when they use
+          your referral wallet address!
         </p>
         <p className="medium">
           Total HPB in Meta World contract: {this.state.getBalance} HPB
         </p>
         <p className="paddedtext">
-          You have [ {this.state.getMyLand} ] Land Tokens
+          You have [ {this.state.getMyBuyers} ] Land Tokens
         </p>
         <br />
         <p>Rent profits earned so far - [ {this.state.landTokensOwned} ] HPB</p>
@@ -363,7 +391,7 @@ class App extends React.Component {
                       />
                       <br />
                       <label className="small">
-                        Provide a Referral Wallet Address:{" "}
+                        You MUST Provide a Referral Wallet Address:{" "}
                       </label>
                       <input
                         type="address"
@@ -386,7 +414,7 @@ class App extends React.Component {
                     <div>
                       <p></p>
                       <label className="small">
-                        Provide a Referral Wallet Address:{" "}
+                        You MUST Provide a Referral Wallet Address:{" "}
                       </label>
                       <input
                         type="address"
@@ -409,10 +437,10 @@ class App extends React.Component {
                 <div className="App">
                   <label className="small">
                     Cash out your earnings - WARNING - your APR% will reduce
-                    each time you do this!
+                    each time you cash out!
                   </label>
                   <button onClick={this.handleSell} className="small">
-                    Cash out your earnings in HPB
+                    Cash out your rent earnings in HPB
                   </button>
                 </div>
               </Grid.Column>
@@ -421,7 +449,7 @@ class App extends React.Component {
           <br />
         </div>
 
-        <p>You have [ {this.state.getMyLand} ] Land Tokens</p>
+        <p>You have [ {this.state.getMyBuyers} ] Land Tokens</p>
         <p>Rent earned so far - [ {this.state.landTokensOwned} ] HPB</p>
       </div>
     );
