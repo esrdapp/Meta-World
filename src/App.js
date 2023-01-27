@@ -327,7 +327,6 @@ class App extends React.Component {
                 <Grid.Column floated="centered">
                   <CardExample
                     floated="centered"
-                    floated="centered"
                     name="Cash Out"
                     description="Cash out the HPB you've earned"
                     image={Metaworld3}
